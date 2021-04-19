@@ -21,6 +21,6 @@ namespace CryptoExchange.Net.OrderBook
 
     internal class ChecksumItem
     {
-        public int Checksum { get; set; }
+        public uint Checksum { get; set; }
     }
 }

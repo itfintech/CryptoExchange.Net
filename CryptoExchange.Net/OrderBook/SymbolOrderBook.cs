@@ -311,7 +311,7 @@ namespace CryptoExchange.Net.OrderBook
         /// </summary>
         /// <param name="checksum"></param>
         /// <returns></returns>
-        protected virtual bool DoChecksum(int checksum) => true;
+        protected virtual bool DoChecksum(uint checksum) => true;
 
         private void ProcessQueue()
         {
@@ -328,7 +328,7 @@ namespace CryptoExchange.Net.OrderBook
                         ProcessInitialOrderBookItem(iobi);
                     if (item is ProcessQueueItem pqi)
                         ProcessQueueItem(pqi);
-                    else if (item is ChecksumItem ci)
+					else if (item is ChecksumItem ci)
                         ProcessChecksum(ci);
                 }
             }
@@ -381,7 +381,7 @@ namespace CryptoExchange.Net.OrderBook
                 }
                 else
                 {
-                    CheckProcessBuffer();
+					CheckProcessBuffer();
                     var (prevBestBid, prevBestAsk) = BestOffers;
                     ProcessRangeUpdates(item.StartUpdateId, item.EndUpdateId, item.Bids, item.Asks);
 
@@ -419,6 +419,7 @@ namespace CryptoExchange.Net.OrderBook
                 {
                     log.Write(LogVerbosity.Warning, $"{Id} order book {Symbol} out of sync. Resyncing");
                     _ = subscription?.Reconnect();
+
                     return;
                 }
             }
@@ -454,7 +455,7 @@ namespace CryptoExchange.Net.OrderBook
         /// Add a checksum to the process queue
         /// </summary>
         /// <param name="checksum"></param>
-        protected void AddChecksum(int checksum)
+        protected void AddChecksum(uint checksum)
         {
             _processQueue.Enqueue(new ChecksumItem() { Checksum = checksum });
             _queueEvent.Set();
@@ -485,7 +486,7 @@ namespace CryptoExchange.Net.OrderBook
 
             _processQueue.Enqueue(new ProcessQueueItem { StartUpdateId = lowest, EndUpdateId = highest , Asks = asks, Bids = bids });
             _queueEvent.Set();
-        }
+        }   
 
         private void ProcessRangeUpdates(long firstUpdateId, long lastUpdateId, IEnumerable<ISymbolOrderBookEntry> bids, IEnumerable<ISymbolOrderBookEntry> asks)
         {
@@ -557,7 +558,9 @@ namespace CryptoExchange.Net.OrderBook
             {
                 // Out of sync
                 log.Write(LogVerbosity.Warning, $"{Id} order book {Symbol} out of sync (expected { LastSequenceNumber + 1}, was {sequence}), reconnecting");
+                
                 subscription?.Reconnect();
+
                 return false;
             }
 

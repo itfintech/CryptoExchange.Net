@@ -265,7 +265,7 @@ namespace CryptoExchange.Net.Objects
         /// <inheritdoc />
         public override string ToString()
         {
-            return $"{base.ToString()}, AutoReconnect: {AutoReconnect}, ReconnectInterval: {ReconnectInterval}, SocketResponseTimeout: {SocketResponseTimeout:c}, SocketSubscriptionsCombineTarget: {SocketSubscriptionsCombineTarget}";
+            return $"{base.ToString()}, AutoReconnect: {AutoReconnect}, ReconnectInterval: {ReconnectInterval}, SocketResponseTimeout: {SocketResponseTimeout:c}, SocketSubscriptionsCombineTarget: {SocketSubscriptionsCombineTarget}, SocketNoDataTimeout: {SocketNoDataTimeout:c}";
         }
     }
 }
